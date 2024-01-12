@@ -1,0 +1,98 @@
+{% extends 'menu.html' %}
+{% block content %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>User info</title>
+  <link rel="stylesheet" href="{% static 'css/edit.css' %}">
+</head>
+<body class="main">
+  <div class="container">
+    <div class="title">User Info</div>
+    <div class="content">
+      <form action="user" id="user" method="POST" >
+        {% csrf_token %}
+        <input type="hidden" name="form_type" value="update">
+        <div class="user-details">
+          <div class="input-box">
+            <span class="details">Username</span>
+            <input type="text" name="Username" placeholder="Enter your username" id="username" value="{{ u.UserName }}" disabled>
+          </div>
+          <div class="input-box">
+            <span class="details">Name</span>
+            <input type="text" name="FullName" placeholder="Enter your name" id="fname" value="{{ u.FullName }}">
+          </div>
+          <div class="input-box">
+            <span class="details">Phone Number</span>
+            <input type="text" name="PhoneNumber" placeholder="Enter your number" id="phonenum" value="{{ u.PhoneNumber }}">
+          </div>
+          <div class="input-box">
+            <span class="details">Password</span>
+            <input type="password" name="Password" placeholder="Enter your password" id="password" value="{{ u.Password }}">
+          </div>
+        </div>
+        <div class="button">
+          <input type="submit" value="update" id="submit-btn">
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    
+    
+
+  
+// Add an event listener to the submit button
+const form = document.getElementById('user');
+
+// Get the input fields
+const firstname = document.querySelector('#fname');
+const username = document.querySelector('#username');
+const password = document.querySelector('#password');
+const phonenum = document.querySelector('#phonenum');
+
+const submitBtn2 = document.querySelector('#submit-btn');
+
+
+submitBtn2.addEventListener('click', function (event) {
+  // Prevent the default form submission behavior
+  let nameRegex = /^[a-zA-Z]+(?: [a-zA-Z]+)+$/;
+  let idRegex = /^\d{8}$/;
+  let numRegex = /^(010|011|012|015)\d{8}$/;
+
+
+  // Check if the required fields are filled
+  if (firstname.value.trim() === '' || !nameRegex.test(firstname.value.trim())) {
+    alert('Please enter your first name.');
+    firstname.focus();
+    event.preventDefault();
+
+    return false;
+  }
+
+  if (phonenum.value.trim() === '' || !numRegex.test(phonenum.value)) {
+    alert('Please enter your phone number.');
+    phonenum.focus();
+    event.preventDefault();
+
+    return false;
+  }
+
+  if (password.value.trim() === '' || password.value.trim().length < 8) {
+    alert('Password should be at least 8 characters');
+    password.focus();
+    event.preventDefault();
+
+    return false;
+  }
+  alert("data updated successfully") ;
+})
+
+  </script>
+
+</body>
+</html>
+
+{% endblock %}

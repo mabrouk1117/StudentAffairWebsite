@@ -1,0 +1,148 @@
+{% block content %} {% load static %}
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <meta charset="UTF-8"/>
+        <meta name="description" content="Home page"/>
+        <title>Students Affairs Login</title>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+        <link rel="stylesheet" href="{% static 'css/login.css' %}"/>
+    </head>
+
+    <body>
+    <div
+            class="bg"
+            style="
+                    background-image: url('{% static 'images/c2966dc8295b40e2d32318aa7b921567.jpg' %}');
+                    "
+    ></div>
+    <img class="img1" src="{% static 'images/Cairo_University_Crest.png' %}"/>
+    <img
+            class="img2"
+            src="{% static 'images/faculty_logo-removebg-preview.png' %}"
+            alt=""
+    />
+    <br/><br/><br/><br/><br/><br/><br/><br/>
+    <h1>Welcome to FCAI-CU</h1>
+
+    <form  action="navpagev2" method="get" id="myForm2"> </form>
+
+    <form align="middle" action="navpagev2" method="POST" id="myForm" onsubmit="submitForm(event)">
+        {% csrf_token %}
+        <div>
+            <input
+                    id="username"
+                    type="text"
+                    placeholder="Username"
+                    name="Username"
+            />
+        </div>
+
+        <br/>
+        <div>
+            <input
+                    id="password"
+                    type="password"
+                    name="Password"
+                    placeholder="Password"
+            />
+        </div>
+
+        <br/>
+        <div>
+            <input type="submit" value="Login" id="login-btn"/>
+        </div>
+    </form>
+    <div>
+        <button class="but">
+            contact us <i class="gg-mail" style="padding: 2%"></i>
+        </button>
+    </div>
+    <br/>
+    <div align="center" class="announce">
+        <p style="color: rgb(255, 255, 255)">You don't have an account?</p>
+
+        <p>
+            <a href="SignUp" style="color: rgb(194, 155, 155)"> Sign up </a>
+        </p>
+    </div>
+
+    <script>
+        window.onload = function () {
+            let f = 0 ;
+            $(document).ready(function () {
+                $.ajax({
+                    type: "GET",
+                    url: "{% url 'getprofiles' %}", // Update the URL here
+                    success: function (response) {
+                        for (var key in response.Data) {
+                            console.log(response.Data[key].logedIN);
+                            if ( response.Data[key].logedIN === true) {
+                                f = 1 ;
+                                break;
+                            }
+                        }  
+                        if( f===1){
+                            document.getElementById("myForm2").submit();
+                            return ;
+                        }
+                    },
+                    error: function () {
+                        alert("An Error Occurred");
+                    },
+                });
+            });
+        }
+
+
+        const submitbtn = document.querySelector("#login-btn");
+        const user = document.getElementById("username");
+        const pass = document.getElementById("password");
+        let flag;
+
+        
+
+
+        function submitForm(event){
+            flag = 0;
+            event.preventDefault(); // Prevent the default form submission behavior
+
+            $(document).ready(function () {
+                $.ajax({
+                    type: "GET",
+                    url: "{% url 'getprofiles' %}", // Update the URL here
+                    success: function (response) {
+                        for (var key in response.Data) {
+                            if (user.value == response.Data[key].UserName) {
+                                if (pass.value == response.Data[key].Password) {
+                                    flag = 1;
+                                    break;
+                                }
+                            }
+                        }
+
+                        if (flag == 1) {
+                            alert("Successfull Login");
+                            document.getElementById("myForm").submit();
+                        } else {
+                            alert("Wrong Username or Password");
+                        }
+                    },
+                    error: function () {
+                        alert("An Error Occurred");
+                    },
+
+                });
+            });
+        }
+    </script>
+
+    <script src="{% static 'java/login.js' %}"></script>
+    </body>
+
+    <footer align="center" style="color: white">
+        &copy; all rights are reserved to FCAI-CU
+    </footer>
+    </html>
+{% endblock %}

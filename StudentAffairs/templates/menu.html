@@ -1,0 +1,129 @@
+{% block content %}{% endblock content %}
+<head>
+    <meta charset="UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+            integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="/>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css"
+            integrity="sha512-SzlrxWUlpfuzQ+pcUCosxcglQRNAq/DZjVsC0lE40xsADsfeQoEypE+enwcOiGjk/bSuGGKHEyjSoQ1zVisanQ=="
+            crossorigin="anonymous"
+            referrerpolicy="no-referrer"
+    />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+</head>
+
+<nav class="nav">
+    <div class="logo"><a href="navpagev2"> students affairs</a></div>
+    <ul>
+        <li><a href="user">user</a></li>
+        <li><a href="Addstudent">add student</a></li>
+        <li><a href="delete">delete student</a></li>
+        <li><a href="editstudent">edit student info</a></li>
+        <li><a href="table">display students</a></li>
+        <li><a href="NewDepartment">new department</a></li>
+    </ul>
+    <a href="login" class="logout" id="logout">logout</a>
+
+    <div class="btn">
+        <i class="fa-solid fa-bars"></i>
+    </div>
+</nav>
+<div class="menu">
+
+    <li><a href="user">user</a></li>
+    <li><a href="Addstudent">add student</a></li>
+    <li><a href="delete">delete student</a></li>
+    <li><a href="editstudent">edit student info</a></li>
+    <li><a href="table">display students</a></li>
+    <li><a href="NewDepartment">new department</a></li>
+    <a href="login" class="logout" id="logout2">logout</a>
+
+</div>
+
+<form  action="login" method="get" id="logMeOut"> </form>
+<script>
+ 
+ window.onload = function () {
+            let f = 0 ;
+            $(document).ready(function () {
+                $.ajax({
+                    type: "GET",
+                    url: "{% url 'getprofiles' %}",
+                    success: function (response) {
+                        for (var key in response.Data) {
+                            console.log(response.Data[key].logedIN);
+                            if ( response.Data[key].logedIN === true) {
+                                f = 1 ;
+                                break;
+                            }
+                        }
+                        if( f===0){
+                            document.getElementById("logMeOut").submit();
+                            return ;
+                        }
+                    },
+                    error: function () {
+                        alert("An Error Occurred");
+                    },
+                });
+            });
+        }
+
+const submitbtn = document.querySelector(".logout");
+
+submitbtn.addEventListener("click", function (event) {
+   
+            $(document).ready(function () {
+                $.ajax({
+                    type: "GET",
+                    url: "{% url 'updateAdmin' %}",
+                    success: function (response) {
+                    },
+                    error: function () {
+                        alert("An Error Occurred");
+                    },
+                });
+            });
+
+
+});
+
+
+const logoutLink = document.querySelector("a.logout#logout2");
+
+logoutLink.addEventListener("click", function (event) {
+            $(document).ready(function () {
+                $.ajax({
+                    type: "GET",
+                    url: "{% url 'updateAdmin' %}",
+                    success: function (response) {
+                    },
+                    error: function () {
+                        alert("An Error Occurred");
+                    },
+                });
+            });
+
+
+});
+
+const btn = document.querySelector(".btn");
+const icon = document.querySelector(".btn i");
+const menu = document.querySelector(".menu");
+
+
+btn.onclick = function () {
+    menu.classList.toggle("op");
+    const open = menu.classList.contains("op");
+
+    icon.classList = open ? "fa-solid fa-xmark" : "fa-solid fa-bars";
+};
+</script>

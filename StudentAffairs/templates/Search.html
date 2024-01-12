@@ -1,0 +1,128 @@
+{% extends 'menu.html' %}
+{% block content %}
+    {% load static %}
+    <!DOCTYPE html>
+    <html lang="en">
+
+    <head>
+
+        <title>Display Students</title>
+        <link rel="{% static 'css/stylesheet" href="mystyle.css' %}">
+
+    </head>
+
+
+    <body class="main">
+    <main class="table">
+        <section class="table__header">
+            <h1>FCAI Students</h1>
+            <div class="input-group">
+                <img src="images/search.png" alt="">
+            </div>
+        </section>
+        <section class="table__body">
+            <table>
+                <thead>
+                <tr>
+                    <th>NO.</th>
+                    <th>student</th>
+                    <th>ID</th>
+                    <th>Year</th>
+                    <th>GPA</th>
+                    <th> status</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>1</td>
+                    <td><img src="images/female.png" alt="">salma ramadan</td>
+                    <td>0</td>
+                    <td>2</td>
+                    <td>4
+                    <td>
+                    <td>
+                        <p class="status active">Active</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td>1</td>
+                    <td><img src="images/female.png" alt="">salma ramadan</td>
+                    <td> 1</td>
+                    <td>2</td>
+                    <td>4
+                    <td>
+                    <td>
+                        <p class="status active">Active</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td>1</td>
+                    <td><img src="images/female.png" alt="">salma ramadan</td>
+                    <td>2</td>
+                    <td>2</td>
+                    <td>4
+                    <td>
+                    <td>
+                        <p class="status active">Active</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td>1</td>
+                    <td><img src="images/female.png" alt="">salma ramadan</td>
+                    <td> 3</td>
+                    <td>2</td>
+                    <td>4
+                    <td>
+                    <td>
+                        <p class="status active">Active</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td>1</td>
+                    <td><img src="images/female.png" alt="">salma ramadan</td>
+                    <td>4</td>
+                    <td>2</td>
+                    <td>4
+                    <td>
+                    <td>
+                        <p class="status active">Active</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td>1</td>
+                    <td><img src="images/female.png" alt="">salma ramadan</td>
+                    <td> 5</td>
+                    <td>2</td>
+                    <td>4
+                    <td>
+                    <td>
+                        <p class="status active">Active</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td>1</td>
+                    <td><img src="images/female.png" alt="">salma ramadan</td>
+                    <td> 6</td>
+                    <td>2</td>
+                    <td>4
+                    <td>
+                    <td>
+                        <p class="status active">Active</p>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <script>if (window.sessionStorage.getItem("loggedAdmin")) {
+
+            } else {
+                window.location.href = "http://127.0.0.1:8000/login";
+            }</script>
+    </body>
+    <br><br>
+    </main>
+    <footer>
+        &copy; all rights are reserved to FCAI
+    </footer>
+
+    </html>
+{% endblock %}

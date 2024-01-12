@@ -1,0 +1,224 @@
+{% extends 'menu.html' %}
+{% block content %}
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" href="{% static 'css/add.css' %}">
+  <title>Add New Student</title>
+</head>
+
+<body class="main">
+  <br>
+
+  <div class="container">
+    <div class="title">Add new student</div>
+    <div class="content">
+      <form action="Addstudent" method="post" id="myform">
+        {% csrf_token %}
+        <div class="user-details">
+          <div class="input-box">
+            <span class="details">ID</span>
+            <input type="text" placeholder="Enter student's ID" id="id" name="student_id">
+          </div>
+          <div class="input-box">
+            <span class="details">Name</span>
+            <input type="text" placeholder="Enter student's name" id="name" name="name">
+          </div>
+          <div class="input-box">
+            <span class="details">Phone Number</span>
+            <input type="text" placeholder="Enter student's number" id="number" name="phone_number">
+          </div>
+          <div class="input-box">
+            <span class="details">Email address</span>
+            <input type="text" placeholder="Enter student's Email" id="email" name="email">
+          </div>
+          <div class="input-box">
+            <span class="details">Address</span>
+            <input type="text" placeholder="Enter student's Address" id="address" name="address">
+          </div>
+          <div class="column" style="display: flex; column-gap: 15px; width: 405px;">
+            <div class="input-box">
+              <label>Level</label>
+              <input type="number" placeholder="Enter student's level" id="level" name="level">
+            </div>
+            <div class="input-box">
+              <label>Birth Date</label>
+              <input type="date" placeholder="Enter student's birth date" id="date" style="width: 118%;" name="dob">
+            </div>
+          </div>
+          <div class="input-box">
+            <label>GPA</label>
+            <input type="text" placeholder="Enter student's GPA" id="gpa" name="gpa">
+        </div>
+          <div class="input-box" style="padding-top: 5px;">
+            <label for="department">Department</label>
+            <select name="department" id="department" style="height: 45px; width: 100%; outline: none; font-size: 16px;
+              border-radius: 5px; padding-left: 15px; border: 1px solid #ccc; border-bottom-width: 2px;
+              border-color: #2339a8; transition: all 0.3s ease;">
+              <option value="General">General</option>
+              <option value="IS">Information System</option>
+              <option value="CS">Computer Science</option>
+              <option value="AI">Artificial Intelligence</option>
+              <option value="IT">Information Technology</option>
+              <option value="DS">Decision Support</option>
+            </select>
+          </div>
+          <div class="input-box" style="padding-top: 5px;">
+            <label for="Status">Status</label>
+            <select name="Status" id="Status" style="height: 45px; width: 100%; outline: none; font-size: 16px;
+              border-radius: 5px; padding-left: 15px; border: 1px solid #ccc; border-bottom-width: 2px;
+              border-color: #2339a8; transition: all 0.3s ease;">
+              <option value="Active">Active</option>
+              <option value="Inactive">Inactive</option>
+            </select>
+        </div>
+        </div>
+        <div class="gender-details">
+          <input type="radio" name="gender" id="dot-1" value="Male">
+          <input type="radio" name="gender" id="dot-2" value="Female">
+          <input type="radio" name="gender" id="dot-3" value="Prefer not to say">
+          <span class="gender-title">Gender</span>
+          <div class="category">
+            <label for="dot-1">
+              <span class="dot one"></span>
+              <span class="gender">Male</span>
+            </label>
+            <label for="dot-2">
+              <span class="dot two"></span>
+              <span class="gender">Female</span>
+            </label>
+            <label for="dot-3">
+              <span class="dot three"></span>
+              <span class="gender">Prefer not to say</span>
+            </label>
+          </div>
+        </div>
+        <div class="button">
+          <input type="submit" value="Register" id="Register">
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <footer>
+    &copy; All rights are reserved to FCAI-CU
+  </footer>
+<script>
+const submitbtn2 = document.querySelector("#Register"); // Change the ID to "add"
+const id = document.getElementById("id");
+let flag = 0;
+
+submitbtn2.addEventListener("click", function (event) {
+    flag = 1;
+    event.preventDefault();
+
+    $(document).ready(function () {
+        $.ajax({
+            type: "GET",
+            url: "{% url 'getstudents' %}",
+            success: function (response) {
+                for (var key in response.Data) {
+                    if (id.value == response.Data[key].student_id) {
+                        flag = 0;
+                        break;
+                    }
+                }
+                if (flag == 0) { // Invert the flag check
+                    alert("User ID already exists"); // Change the alert message
+                } else {
+                    const ID = document.getElementById("id");
+                    const studentName = document.getElementById("name");
+                    const phoneNumber = document.getElementById("number");
+                    const email = document.getElementById("email");
+                    const address = document.getElementById("address");
+                    const level = document.getElementById("level");
+                    const gpa = document.getElementById("gpa");
+
+                    // Validation functions
+                    const isValidEmail = email => {
+                        const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+                        return re.test(String(email).toLowerCase());
+                    };
+
+                    const isValidPhoneNumber = phoneNumber => {
+                        const regex = /^(\+)?(\d{1,2})?(\s)?((\d{3})|(\(\d{3}\)))?(\s|-)?(\d{3})(\s|-)?(\d{4})$/;
+                        return regex.test(phoneNumber);
+                    };
+
+                    const hasOnlyDigits = str => {
+                        const regex = /^\d{8}$/;
+                        return regex.test(str);
+                    };
+
+                    function isValidName(name) {
+                        let nameRegex = /^[a-zA-Z]+(?: [a-zA-Z]+)+$/;
+                        return nameRegex.test(name);
+                    }
+
+                    // Perform data validation
+                    if (
+                        ID.value === "" ||
+                        email.value === "" ||
+                        studentName.value === "" ||
+                        phoneNumber.value === "" ||
+                        address.value === "" ||
+                        level.value === ""
+                    ) {
+                        alert("Data is not complete");
+                        return false;
+                    }
+
+                    if (!hasOnlyDigits(ID.value) || ID.value.length < 5 || ID.value.length > 20) {
+                        alert("Enter a valid ID containing only numbers between 5 and 20 characters in length");
+                        return false;
+                    }
+
+                    if (!isValidEmail(email.value)) {
+                        alert("Enter a valid email");
+                        return false;
+                    }
+
+                    if (!isValidPhoneNumber(phoneNumber.value)) {
+                        alert("Enter a valid phone number");
+                        return false;
+                    }
+
+                    if (!isValidName(studentName.value)) {
+                        alert("Enter a valid Name containing only characters separated by space");
+                        return false;
+                    }
+
+                    if (level.value < 1 || level.value > 4) {
+                        alert("Enter a valid level between 1 and 4");
+                        return false;
+                    }
+
+                    if (gpa.value < "1" || gpa.value > "4" || parseFloat(gpa.value) < 1 || parseFloat(gpa.value) > 4) {
+                        alert("Enter a valid GPA number between 1 and 4");
+                        return false;
+                    }
+                    if ((level.value <= 2) && (departmentSelect.value !== "General")) {
+                        alert("this student can't be in a depatment");
+                        return false;
+                    }
+                    if ((level.value > 2) && (departmentSelect.value === "General")) {
+                        alert("this student must have depatment");
+                        return false;
+                    }
+                    document.getElementById("myform").submit(); // Submit the form
+                }
+            },
+            error: function () {
+                alert("An Error Occurred");
+            }
+        });
+    });
+});
+</script>
+  <script src="{% static 'java/addStudent.js' %}"></script>
+</body>
+</html>
+
+{% endblock %}

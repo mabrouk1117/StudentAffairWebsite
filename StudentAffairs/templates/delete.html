@@ -1,0 +1,131 @@
+{%extends 'menu.html'%}
+{%load static%}
+{%block content%}
+<!DOCTYPE html>
+<html lang="en">
+  
+  <head>
+    
+    <link rel="stylesheet" href="{%static 'css/edit.css'%}">
+    <title> delete account</title>
+  </head>
+
+<body>
+  <body>
+    <div class="container">
+      <div class="title"> delete student</div>
+      <div class="content">
+        <form action="delete" method="post" id="myform">
+          {% csrf_token%}
+          <div class="user-details">
+            <div class="input-box">
+              <span class="details">ID</span>
+              <input type="text" placeholder="Enter student's ID" id="id" name="id">
+            </div>
+            <div class="input-box">
+              <span class="details">name</span>
+              <input type="text" placeholder="Enter student's name" id="fullname" name="name">
+            </div>
+            <div class="input-box">
+              <label>level</label>
+              <input type="number" placeholder="Enter student's level" id="level"  name="lvl">
+            </div>
+            <div class="input-box">
+              <label>department</label>
+              <select style="height: 45px;
+                  width: 100%;
+                  outline: none;
+                  font-size: 16px;
+                  border-radius: 5px;
+                  padding-left: 15px;
+                  border: 1px solid #ccc;
+                  border-bottom-width: 2px;
+                  transition: all 0.3s ease;" name="depart">
+                <option value="General">General</option>
+                <option value="IS">Information System</option>
+                <option value="CS">Computer Science</option>
+                <option value="AI">Artificial Intelligence</option>
+                <option value="IT">Information Technology</option>
+                <option value="DS">Decision Support</option>
+              </select>
+            </div>
+          </div>
+          <!-- -->
+
+          <div class="button">
+            <input type="submit" value="delete" id="submit-btn">
+          </div>
+        </form>
+      </div>
+    </div>
+    <script src="{%static 'java/delet.js'%}"></script>
+  </body>
+  </main>
+  <footer>
+    &copy; all rights are reserved to FCAI-CU
+  </footer>
+
+</body>
+<script>
+  const submitbtn2 = document.querySelector("#submit-btn");
+  const id = document.getElementById("id");
+  let flag = 0;
+
+  submitbtn2.addEventListener("click", function(event) {
+    flag = 1;
+    event.preventDefault();
+    $(document).ready(function() {
+      $.ajax({
+        type: "GET",
+        url: "{% url 'getstudents' %}",
+        success: function(response) {
+          for (var key in response.Data) {
+            if (id.value == response.Data[key].student_id) {
+              flag = 0;
+              break;
+            }
+          }
+          if (flag == 1) {
+            alert("User ID does not exist");
+          } else {
+            const Fullname = document.getElementById("fullname");
+            const ID = document.getElementById("id");
+            const Level = document.getElementById("level");
+            const departmentSelect = document.querySelector('select');
+            const submitBtn = document.querySelector('#submit-btn');
+            let nameRegex = /^[a-zA-Z]+(?: [a-zA-Z]+)+$/;
+              let idRegex = /^\d{8}$/;
+
+              if (!idRegex.test(ID.value)) {
+                  alert("Invalid ID");
+                  return false;
+              }
+              if (!nameRegex.test(Fullname.value)) {
+                  alert("Invalid Name");
+                  return false;
+              }
+              if ((Level.value <= 2) && (departmentSelect.value !== "General")) {
+                  alert("This student can't be in a depatment");
+                  return false;
+
+              }
+              if ((Level.value > 2) && (departmentSelect.value === "General")) {
+                  alert("This student must have depatment");
+                  return false;
+              }
+
+
+            document.getElementById("myform").submit(); // Submit the form
+          }
+        },
+        error: function() {
+          alert("An Error Occurred");
+        }
+      });
+    });
+  });
+</script>
+
+
+</html>
+{%endblock%}
